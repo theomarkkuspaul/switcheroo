@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/theomarkkuspaul/switcheroo/issues"
   },
-  "homepage": "https://github.com/theomarkkuspaul/switcheroo#readme"
+  "homepage": "https://github.com/theomarkkuspaul/switcheroo#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
