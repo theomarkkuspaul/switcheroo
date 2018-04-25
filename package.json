@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/theomarkkuspaul/switcheroo#readme",
   "dependencies": {
+    "ejs": "^2.5.9",
     "express": "^4.16.3"
   }
 }
