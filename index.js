@@ -1,10 +1,11 @@
 const express = require('express');
 const ejs = require('ejs');
 const app = express();
+const path = require('path');
 
 // Configs
 app.set('view engine', 'ejs');
-app.set(express.static('public'));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 
 // GET route for the main page
