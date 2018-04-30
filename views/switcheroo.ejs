@@ -4,6 +4,19 @@
 </head>
 
 <body>
-  <h1 class="text-center">Switcheroo</h1>
+  <div class="grid-container">
+    <h1 class="text-center">Switcheroo</h1>
+
+    <div class="grid-x">
+      <div class="cell small-12 medium-8 medium-offset-2 image-input-container">
+        <div class="image-input-form-wrapper">
+          <form action="/api/image" method="POST" class="text-center">
+            <input type="text" class="input-field" placeholder="PLEASE ENTER SOURCE URL OF IMAGE">
+            <input type="submit" class="button input-submit">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
