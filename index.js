@@ -11,5 +11,10 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 // GET route for the main page
 app.get('/switcheroo', (req, res) => res.render('switcheroo'));
 
+// POST route for sending image urls from the client
+app.post('/api/image', (req, res) => {
+  res.send({ key: 'value'});
+});
+
 // Run the app
 app.listen(3000, () => console.log('App is listening on localhost:3000'));
