@@ -5,6 +5,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const Promise = require('bluebird');
 
+const fs = require('fs');
+
 // Configs
 app.set('view engine', 'ejs');
 app.use('/public', express.static(path.join(__dirname, 'public')));
@@ -17,24 +19,63 @@ app.get('/switcheroo', (req, res) => res.render('switcheroo'));
 app.post('/api/image', (req, res) => {
   const FetchImage = require('./services/fetch-image');
   const SaveImage = require('./services/save-image');
+  const ResizeImage = require('./services/resize-image');
+  const ChunkImage = require('./services/chunk-image');
 
   var imageUrl = req.body.imageUrl;
   var filename = path.basename(imageUrl);
+  var filepath = ['uploads', filename].join('/');
 
   // get image from url
   new FetchImage(imageUrl).call()
   .then(function(imageData){
-    var filepath = ['uploads', filename].join('/');
+    // save imaeg to disk
     return new SaveImage(imageData, filepath).call();
   })
   .then(function(msg){
-    res.send(msg);
+    // resize image to fit 600px x 600px dimensions
+    return new ResizeImage(filepath).call();
   })
+  .then(function(resizedImagePath){
+    // chunk image into 3 columns and 3 rows
+    return new ChunkImage(resizedImagePath, filename).call();
+  })
+  .then(function(){
+    // we set a timeout to delay the client
+    // fetching the chunked images.
+    // allow the filesystem to register the new images
+    // before trying to read them
+    // THIS IS A HACK
+    // (perhaps we can write a service to confirm the images' presence???)
+    setTimeout(function(){
+      // respond back image file name
+      // for further GET requests to retrieve image
+      res.json(path.parse(filename).name);
+    }, 100);
+  });
+});
 
+app.get('/image', function(req, res){
+  // set image header
+  res.setHeader('content-type', 'image/jpg');
 
-  // chunk image into 3 columns and 3 rows
+  // url node module to assist getting url query
+  // parameter data from url
+  const url = require('url');
 
-  // respond back list of image 'parts' or 'segments'
+  const query = url.parse(req.url, true).query;
+
+  const id = query.id + '.jpg';
+  const filename = path.parse(query.filename).name;
+
+  // generate absolute path of image chunk
+  var chunksPath = ['chunks', filename, id].join('/');
+
+  // read image from disk
+  var image = fs.readFileSync(chunksPath);
+
+  // send image back
+  res.end(image, 'binary');
 });
 
 // Run the app
