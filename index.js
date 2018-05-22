@@ -32,6 +32,11 @@ app.post('/api/image', (req, res) => {
     // save imaeg to disk
     return new SaveImage(imageData, filepath).call();
   })
+  .catch(function(err){
+    console.error(err);
+    const errMsg = 'An error has occurred fetching image from this address: ' + imageUrl;
+    res.status(404).send(errMsg);
+  })
   .then(function(msg){
     // resize image to fit 600px x 600px dimensions
     return new ResizeImage(filepath).call();
