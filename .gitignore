@@ -1,0 +1,5 @@
+// dir to store uploaded images
+uploads/
+
+// dir to store chunked images
+chunks/

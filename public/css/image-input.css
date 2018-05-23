@@ -1,0 +1,45 @@
+
+.image-input-container {
+  border: 1px solid #23DB1C;
+  height: 150px;
+  padding: 2.5rem;
+  display: table;
+}
+
+.image-input-form-wrapper {
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.input-submit {
+  padding: 0;
+  margin: 0;
+  vertical-align: initial;
+  padding: 1rem;
+  background-color: black;
+  border: none;
+  font-family: emulogic;
+  font-size: 0.5rem;
+}
+
+.input-submit:hover, .input-submit:focus {
+  background-color: black;
+}
+
+.input-field {
+  width: 70%;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  background-color: black;
+  border: 1px solid #8904FC;
+  font-family: emulogic;
+  font-size: 0.5rem;
+  text-align: center;
+  color: white;
+}
+
+.input-field:focus {
+  background-color: black;
+  border: 1px solid #8904FC;
+}
