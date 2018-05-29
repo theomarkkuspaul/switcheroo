@@ -15,7 +15,8 @@ function SaveImage (imageData, filepath) {
       const imageData = that.imageData;
 
       fs.writeFile(filepath, imageData, (err) => {
-        if (err) throw reject(err);
+        if (err)
+          return reject(err);
 
         const successMessage = ['File saved:', filepath].join(' ');
         resolve(successMessage);
