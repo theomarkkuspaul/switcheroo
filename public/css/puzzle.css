@@ -1,0 +1,39 @@
+/*Will need to refactor this*/
+#empty-chunk {
+  width: 202.38px; /* Hardcoded value burgh */
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 100%;
+  border: 1.2px solid #01013E;
+  height: auto;
+}
+
+.puzzle-container {
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+  background-color: #01013E;
+  border-bottom: 2px solid #23DB1C;
+  border-top: 2px solid #23DB1C;
+}
+
+.image-chunk {
+  display: inline-block;
+  padding: 1px;
+}
+
+.image-chunk img {
+  border: 1.2px solid yellow;
+}
+
+#puzzle {
+  width: fit-content;
+  border: 2px solid #8904FC;
+}
+
+.row {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}

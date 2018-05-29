@@ -1,9 +1,10 @@
 
 .image-input-container {
-  border: 1px solid #23DB1C;
+  border: 2px solid #23DB1C;
   height: 150px;
   padding: 2.5rem;
   display: table;
+  margin-top: 1rem;
 }
 
 .image-input-form-wrapper {
@@ -32,7 +33,7 @@
   margin: 0;
   display: inline-block;
   background-color: black;
-  border: 1px solid #8904FC;
+  border: 2px solid #8904FC;
   font-family: emulogic;
   font-size: 0.5rem;
   text-align: center;
