@@ -10,6 +10,7 @@ const fs = require('fs');
 // Configs
 app.set('view engine', 'ejs');
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/chunks', express.static(path.join(__dirname, 'chunks')));
 app.use(bodyParser.json());
 
 // GET route for the main page
