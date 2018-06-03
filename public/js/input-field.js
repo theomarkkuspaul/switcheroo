@@ -24,9 +24,11 @@ $(function(){
         };
       },
       error: function(err){
-        console.log(err.responseText);
+        console.error(err.responseText);
       }
+    }).done(function(a,b,c){
+      debugger
+      window.puzzle.shuffle();
     });
-
   });
 });
