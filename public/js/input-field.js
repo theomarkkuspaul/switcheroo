@@ -27,7 +27,6 @@ $(function(){
         console.error(err.responseText);
       }
     }).done(function(a,b,c){
-      debugger
       window.puzzle.shuffle();
     });
   });
