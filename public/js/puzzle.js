@@ -1,27 +1,68 @@
+
 $(function(){
-  const puzzleBoard = new Puzzle().init();
+  puzzleBoard.init();
 });
 
 function Puzzle () {
   this.init = function() {
-    bindImageChunkClick()
+    this.imageChunks = $('.image-chunk');
+
+    bindImageChunks.call(this);
     return this;
   }
 
-  function bindImageChunkClick () {
-    $('.image-chunk').click(function(e){
-      new Chunk(this).move();
+  var handleVictory = function () {
+    this.imageChunks.map(function(idx, chunk){
+      $(chunk).unbind('click');
     });
+
+    this.completed = true;
+
+    console.log("You win!");
+    alert("You win!");
+    return this;
   }
 
-  this.shuffle = function () {
+  var bindImageChunks = function () {
+    return this.imageChunks.map(function(idx, chunk){
+
+      $(chunk).click(function(e){
+        var chunk = new Chunk(e.currentTarget);
+        chunk.move();
+
+        if (this.isCompleted())
+          handleVictory.call(this);
+
+      }.bind(this));
+
+      return chunk;
+    }.bind(this));
+  }
+
+  this.isCompleted = function () {
+    const winningFormula = '012345678';
+    var currentState = '';
+
+    this.imageChunks.map(function(id, chunk){
+      currentState += chunk.firstElementChild.dataset.startingPosition;
+    });
+
+    return currentState === winningFormula;
+  }
+
+  this.shuffle = function (params) {
+    // default parameters
+    params = params || {};
+
     // create a container to store history
     // of Puzzle shuffle
     const history = [];
 
-    // randomise a number between 15-20
-    const minValue = 15;
-    const maxValue = 20;
+    // randomise a number between
+    // a provider min and max value
+    // defaults to 15 and 20 respectively
+    const minValue = params.minValue || 15;
+    const maxValue = params.maxValue || 20;
 
     // to determine the initial moves to mix up the puzzle
     const randomValueParams = {min: minValue, max: maxValue};
@@ -56,7 +97,8 @@ function Puzzle () {
 }
 
 function Chunk (element) {
-  this.image = element.firstElementChild
+  this.element = element;
+  this.image = element.firstElementChild;
   this.cellID = parseInt(element.id.slice(-1));
 
   var emptyChunkID = function () {
