@@ -1,8 +1,3 @@
-
-$(function(){
-  puzzleBoard.init();
-});
-
 function Puzzle () {
   this.init = function() {
     this.imageChunks = $('.image-chunk');

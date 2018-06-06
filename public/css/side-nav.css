@@ -1,0 +1,52 @@
+.side-nav-container {
+  display: flex;
+  align-items: center;
+}
+
+.side-nav {
+  border: 2px solid #8904FC;
+  margin: auto;
+  font-family: emulogic;
+  background-color: black;
+  margin-left: 1rem;
+}
+
+.side-nav ul {
+  margin: 0;
+  padding: 1rem 2rem;
+  text-align: center;
+}
+
+.side-nav h5, h6 {
+  font-family: emulogic;
+}
+
+.side-nav h6 {
+  font-size: 12px;
+  margin: 0;
+}
+
+.side-nav span {
+  color: red;
+}
+
+.side-nav ul li {
+  list-style-type: none;
+  margin-bottom: 1rem;
+}
+
+.side-nav.expanded {
+  min-height: 20rem;
+}
+
+.side-nav li.buttons {
+  margin-bottom: 0;
+  margin-top: 3rem;
+}
+
+.side-nav li.buttons button {
+  color: white;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
