@@ -1,20 +1,33 @@
-
-$(function(){
-  puzzleBoard.init();
-});
-
 function Puzzle () {
   this.init = function() {
     this.imageChunks = $('.image-chunk');
+    this.moveCounter = 0;
+    this.timer       = new Timer();
 
+    startTimer.call(this);
     bindImageChunks.call(this);
     return this;
+  }
+
+  var startTimer = function () {
+    if (this.timer) {
+      this.timer.start();
+      this.timer.addEventListener('secondsUpdated', function(e){
+        $('#timer').html(this.timer.getTimeValues().toString());
+      }.bind(this));
+      return true;
+    }
+
+    else
+      return false;
   }
 
   var handleVictory = function () {
     this.imageChunks.map(function(idx, chunk){
       $(chunk).unbind('click');
     });
+
+    this.timer.stop();
 
     this.completed = true;
 
@@ -29,6 +42,8 @@ function Puzzle () {
       $(chunk).click(function(e){
         var chunk = new Chunk(e.currentTarget);
         chunk.move();
+        this.incrementMoveCounter();
+        this.updateMoveCounter();
 
         if (this.isCompleted())
           handleVictory.call(this);
@@ -37,6 +52,14 @@ function Puzzle () {
 
       return chunk;
     }.bind(this));
+  }
+
+  this.incrementMoveCounter = function () {
+    this.moveCounter += 1;
+  }
+
+  this.updateMoveCounter = function () {
+    $('#move-counter').text(this.moveCounter);
   }
 
   this.isCompleted = function () {
