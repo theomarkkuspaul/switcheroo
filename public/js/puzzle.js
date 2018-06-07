@@ -6,6 +6,7 @@ function Puzzle () {
 
     startTimer.call(this);
     bindImageChunks.call(this);
+    bindRestartButton.call(this);
     return this;
   }
 
@@ -13,7 +14,7 @@ function Puzzle () {
     if (this.timer) {
       this.timer.start();
       this.timer.addEventListener('secondsUpdated', function(e){
-        $('#timer').html(this.timer.getTimeValues().toString());
+        this.updateTimer();
       }.bind(this));
       return true;
     }
@@ -54,6 +55,12 @@ function Puzzle () {
     }.bind(this));
   }
 
+  var bindRestartButton = function () {
+    $('#restart').click(function(e){
+      this.restart();
+    }.bind(this));
+  }
+
   this.incrementMoveCounter = function () {
     this.moveCounter += 1;
   }
@@ -71,6 +78,44 @@ function Puzzle () {
     });
 
     return currentState === winningFormula;
+  }
+
+  this.restart = function () {
+    // shuffle the puzzle
+    this.shuffle();
+
+    // set the puzzle's move counter back to 0
+    this.resetMoveCounter();
+
+    // set the clock back to 00:00:00
+    this.resetTimer();
+
+    // start the timer again
+    this.timer.start();
+
+    // make images clickable again
+    // in case the puzzle has been completed
+    bindImageChunks.call(this)
+  }
+
+  this.resetMoveCounter = function () {
+    // move counter is assigned to 0
+    this.moveCounter = 0;
+
+    // update the front end to display move counter
+    this.updateMoveCounter();
+  }
+
+  this.resetTimer = function () {
+    // timer is rewound back to 00:00:00
+    this.timer.stop();
+
+    // update the front end to display timer
+    this.updateTimer();
+  }
+
+  this.updateTimer = function () {
+    $('#timer').html(this.timer.getTimeValues().toString());
   }
 
   this.shuffle = function (params) {
