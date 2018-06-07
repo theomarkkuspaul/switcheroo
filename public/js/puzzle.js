@@ -2,15 +2,32 @@ function Puzzle () {
   this.init = function() {
     this.imageChunks = $('.image-chunk');
     this.moveCounter = 0;
+    this.timer       = new Timer();
 
+    startTimer.call(this);
     bindImageChunks.call(this);
     return this;
+  }
+
+  var startTimer = function () {
+    if (this.timer) {
+      this.timer.start();
+      this.timer.addEventListener('secondsUpdated', function(e){
+        $('#timer').html(this.timer.getTimeValues().toString());
+      }.bind(this));
+      return true;
+    }
+
+    else
+      return false;
   }
 
   var handleVictory = function () {
     this.imageChunks.map(function(idx, chunk){
       $(chunk).unbind('click');
     });
+
+    this.timer.stop();
 
     this.completed = true;
 
