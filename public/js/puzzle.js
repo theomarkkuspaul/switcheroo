@@ -45,6 +45,7 @@ function Puzzle () {
       $(chunk).click(function(e){
         var chunk = new Chunk(e.currentTarget);
         chunk.move();
+
         this.incrementMoveCounter();
         this.updateMoveCounter();
 
@@ -72,13 +73,7 @@ function Puzzle () {
   }
 
   this.isCompleted = function () {
-    var currentState = '';
-
-    this.imageChunks.map(function(id, chunk){
-      currentState += chunk.firstElementChild.dataset.startingPosition;
-    });
-
-    return currentState === winningFormula;
+    return this.currentShape() === winningFormula;
   }
 
   this.restart = function () {
@@ -162,5 +157,13 @@ function Puzzle () {
     // after the loop has completed
     // return the randomised shuffle history container
     return history;
+  }
+
+  this.currentShape = function () {
+    var shape = '';
+    this.imageChunks.each(function(idx, chunk){
+      shape += chunk.firstElementChild.dataset.startingPosition;
+    });
+    return shape;
   }
 }
