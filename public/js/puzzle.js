@@ -1,4 +1,6 @@
 function Puzzle () {
+  const winningFormula = '012345678';
+
   this.init = function() {
     this.imageChunks = $('.image-chunk');
     this.moveCounter = 0;
@@ -70,7 +72,6 @@ function Puzzle () {
   }
 
   this.isCompleted = function () {
-    const winningFormula = '012345678';
     var currentState = '';
 
     this.imageChunks.map(function(id, chunk){
