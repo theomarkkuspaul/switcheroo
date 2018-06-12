@@ -23,6 +23,8 @@
 
 .image-chunk img {
   border: 1.2px solid yellow;
+  min-height: 194.172px; /* Hardcoded value burgh */
+  min-width: 194.172px; /* Hardcoded value burgh */
 }
 
 #puzzle {
