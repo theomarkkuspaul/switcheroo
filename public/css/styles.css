@@ -6,3 +6,9 @@ body {
 h1 {
   font-family: emulogic;
 }
+
+#loading-spinner {
+  left: 41.75%;
+  top: 53.25%;
+  position: absolute;
+}
