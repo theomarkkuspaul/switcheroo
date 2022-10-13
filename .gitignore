@@ -3,3 +3,5 @@ uploads/
 
 // dir to store chunked images
 chunks/
+
+node_modules
