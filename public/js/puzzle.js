@@ -1,4 +1,6 @@
 function Puzzle () {
+  const winningFormula = '012345678';
+
   this.init = function() {
     this.imageChunks = $('.image-chunk');
     this.moveCounter = 0;
@@ -43,6 +45,7 @@ function Puzzle () {
       $(chunk).click(function(e){
         var chunk = new Chunk(e.currentTarget);
         chunk.move();
+
         this.incrementMoveCounter();
         this.updateMoveCounter();
 
@@ -70,14 +73,7 @@ function Puzzle () {
   }
 
   this.isCompleted = function () {
-    const winningFormula = '012345678';
-    var currentState = '';
-
-    this.imageChunks.map(function(id, chunk){
-      currentState += chunk.firstElementChild.dataset.startingPosition;
-    });
-
-    return currentState === winningFormula;
+    return this.currentShape() === winningFormula;
   }
 
   this.restart = function () {
@@ -161,5 +157,13 @@ function Puzzle () {
     // after the loop has completed
     // return the randomised shuffle history container
     return history;
+  }
+
+  this.currentShape = function () {
+    var shape = '';
+    this.imageChunks.each(function(idx, chunk){
+      shape += chunk.firstElementChild.dataset.startingPosition;
+    });
+    return shape;
   }
 }

@@ -7,7 +7,7 @@ function Chunk (element) {
     var emptyChunk = $('#empty-chunk').parent()[0];
     var emptyChunkID = emptyChunk.id.slice(-1);
     return parseInt(emptyChunkID);
-  };
+  }.bind(this);
 
   var updateChunkPosition = function () {
     var emptyChunk = $('#empty-chunk')[0];
@@ -45,5 +45,10 @@ function Chunk (element) {
 
   this.canMoveUp = function () {
     return (this.cellID - 3 == emptyChunkID());
+  }
+
+  this.inHomeCell = function () {
+    // probably should refactor this...
+    return this.image.dataset.startingPosition == $(this.image).parent()[0].id.slice(-1);
   }
 }
