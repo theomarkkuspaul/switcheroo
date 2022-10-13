@@ -10,7 +10,6 @@ function ChunkImage (imagePath, filename) {
   this.filename = filename;
 
   this.call = function () {
-    const image = sharp(imagePath);
     const chunkLength = 200;
 
     const chunksStoreDir = 'chunks';
@@ -24,6 +23,7 @@ function ChunkImage (imagePath, filename) {
 
     for (var i = 0; i <= 400; i += 200) {
       for (var j = 0; j <= 400; j += 200) {
+        const image = sharp(imagePath);
 
         var dimensions = {
           top: i,

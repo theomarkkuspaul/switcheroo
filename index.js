@@ -5,6 +5,11 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const Promise = require('bluebird');
 
+const FetchImage = require('./services/fetch-image');
+const SaveImage = require('./services/save-image');
+const ResizeImage = require('./services/resize-image');
+const ChunkImage = require('./services/chunk-image');
+
 const fs = require('fs');
 
 // Configs
@@ -18,13 +23,8 @@ app.get('/switcheroo', (req, res) => res.render('switcheroo'));
 
 // POST route for sending image urls from the client
 app.post('/api/image', (req, res) => {
-  const FetchImage = require('./services/fetch-image');
-  const SaveImage = require('./services/save-image');
-  const ResizeImage = require('./services/resize-image');
-  const ChunkImage = require('./services/chunk-image');
-
   var imageUrl = req.body.imageUrl;
-  var filename = path.basename(imageUrl);
+  var filename = path.basename(imageUrl.split("?")[0]);
   var filepath = ['uploads', filename].join('/');
 
   // get image from url
@@ -34,7 +34,6 @@ app.post('/api/image', (req, res) => {
     return new SaveImage(imageData, filepath).call();
   })
   .catch(function(err){
-    console.error(err);
     const errMsg = 'An error has occurred fetching image from this address: ' + imageUrl;
     res.status(404).send(errMsg);
   })
