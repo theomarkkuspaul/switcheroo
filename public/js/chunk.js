@@ -18,17 +18,22 @@ function Chunk (element) {
   }.bind(this);
 
   this.move = function () {
+    let direction;
+  
     if (this.canMoveRight())
-      return updateChunkPosition();
+      direction = 'right';
 
     if (this.canMoveLeft())
-      return updateChunkPosition();
+      direction = 'left';
 
     if (this.canMoveUp())
-      return updateChunkPosition();
+      direction = 'up';
 
     if (this.canMoveDown())
-      return updateChunkPosition();
+      direction = 'down';
+
+    updateChunkPosition();
+    return direction;
   }
 
   this.canMoveRight = function () {

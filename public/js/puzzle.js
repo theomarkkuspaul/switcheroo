@@ -4,9 +4,13 @@ function Puzzle () {
     this.moveCounter = 0;
     this.timer       = new Timer();
 
+    // create a container to store history of random and human moves
+    this.history     = [];
+
     startTimer.call(this);
     bindImageChunks.call(this);
     bindRestartButton.call(this);
+    bindSolveButton.call(this);
     return this;
   }
 
@@ -42,7 +46,10 @@ function Puzzle () {
 
       $(chunk).click(function(e){
         var chunk = new Chunk(e.currentTarget);
-        chunk.move();
+        const chunkDirection = chunk.move();
+        const emptyChunkDirection = oppositeMove(chunkDirection);
+
+        this.history.push({ direction: emptyChunkDirection, player: true, moveNumber: this.history.length + 1 });
         this.incrementMoveCounter();
         this.updateMoveCounter();
 
@@ -58,6 +65,12 @@ function Puzzle () {
   var bindRestartButton = function () {
     $('#restart').click(function(e){
       this.restart();
+    }.bind(this));
+  }
+
+  var bindSolveButton = function () {
+    $('#solve').click(function(e){
+      this.solve();
     }.bind(this));
   }
 
@@ -122,10 +135,6 @@ function Puzzle () {
     // default parameters
     params = params || {};
 
-    // create a container to store history
-    // of Puzzle shuffle
-    const history = [];
-
     // randomise a number between
     // a provider min and max value
     // defaults to 15 and 20 respectively
@@ -153,13 +162,36 @@ function Puzzle () {
       emptyChunk.move(randomDirection);
 
       // 5. store direction moved in history container
-      history.push(randomDirection)
+      this.history.push({ direction: randomDirection, player: false, moveNumber: this.history.length + 1 });
     };
 
-    console.log('Shuffle history:', history);
+    console.log('Shuffle history:', this.history);
 
     // after the loop has completed
     // return the randomised shuffle history container
-    return history;
+    return this.history;
+  }
+
+  this.solve = () => {
+    const history = this.history;
+
+    history.reverse().forEach(move => {
+      const undoMove = oppositeMove(move.direction);
+      var emptyChunk = new EmptyChunk();
+      emptyChunk.move(undoMove);
+    });
+  }
+
+  function oppositeMove (m) {
+    if (m == 'right')
+      return 'left';
+    else if (m == 'left')
+      return 'right';
+    else if (m == 'down')
+      return 'up';
+    else if (m == 'up')
+      return 'down';
+    else
+      return false;
   }
 }
