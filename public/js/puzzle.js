@@ -179,10 +179,12 @@ function Puzzle () {
   this.solve = async () => {
     const history = this.history;
 
+    this.tileMoving = true;
     for (move of history.reverse()) {
       const undoMove = oppositeMove(move.direction);
       await this.emptyChunk.move(undoMove);
     };
+    this.tileMoving = false;
 
     this.history = [];
   }
