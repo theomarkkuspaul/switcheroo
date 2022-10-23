@@ -9,30 +9,42 @@ function Chunk (element) {
     return parseInt(emptyChunkID);
   };
 
-  var updateChunkPosition = function () {
+  var updateChunkPosition = function (style) {
     var emptyChunk = $('#empty-chunk')[0];
-    var imageChunk = this.image
+    var imageChunk = $(this.image);
 
-    $('#chunk-' + emptyChunkID()).html(imageChunk)
-    $('#chunk-' + this.cellID).html(emptyChunk);
+    imageChunk.css(style);
+    setTimeout(() => {
+      $('#chunk-' + emptyChunkID()).html(imageChunk[0]);
+      $('#chunk-' + this.cellID).html(emptyChunk);
+      imageChunk.css({top: 0, left: 0});
+    }, 500);
   }.bind(this);
 
   this.move = function () {
-    let direction;
+    let direction, style;
   
-    if (this.canMoveRight())
+    if (this.canMoveRight()) {
       direction = 'right';
+      style = { left: '194.1172px'};
+    }
 
-    if (this.canMoveLeft())
+    if (this.canMoveLeft()) {
       direction = 'left';
+      style = { left: '-194.1172px'};
+    }
 
-    if (this.canMoveUp())
+    if (this.canMoveUp()) {
       direction = 'up';
+      style = { top: '-194.1172px'};
+    }
 
-    if (this.canMoveDown())
+    if (this.canMoveDown()) {
       direction = 'down';
+      style = { top: '194.1172px'};
+    }
 
-    updateChunkPosition();
+    updateChunkPosition(style);
     return direction;
   }
 

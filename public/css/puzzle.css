@@ -19,12 +19,20 @@
 .image-chunk {
   display: inline-block;
   padding: 1px;
+  position: relative;
+  height: 194.172px;
+  width: 194.172px;
 }
 
 .image-chunk img {
   border: 1.2px solid yellow;
-  min-height: 194.172px; /* Hardcoded value burgh */
-  min-width: 194.172px; /* Hardcoded value burgh */
+  height: 194.172px; /* Hardcoded value burgh */
+  width: 194.172px; /* Hardcoded value burgh */
+  position: absolute;
+  transition-property: left, top;
+  transition-duration: 0.5s;
+  left: 0;
+  top: 0;
 }
 
 #puzzle {
