@@ -1,6 +1,8 @@
 function Puzzle () {
   this.init = function() {
     this.imageChunks = $('.image-chunk');
+    this.emptyChunk = new EmptyChunk();
+    this.tileMoving = false;
     this.moveCounter = 0;
     this.timer       = new Timer();
 
@@ -44,11 +46,17 @@ function Puzzle () {
   var bindImageChunks = function () {
     return this.imageChunks.map(function(idx, chunk){
 
-      $(chunk).click(function(e){
-        var chunk = new Chunk(e.currentTarget);
-        const chunkDirection = chunk.move();
-        const emptyChunkDirection = oppositeMove(chunkDirection);
+      $(chunk).click(async function(e){
+        if (this.tileMoving)
+          return;
 
+        var chunk = new Chunk(e.currentTarget);
+
+        this.tileMoving = true;
+        const chunkDirection = await chunk.move();
+        this.tileMoving = false;
+
+        const emptyChunkDirection = oppositeMove(chunkDirection);
         this.history.push({ direction: emptyChunkDirection, player: true, moveNumber: this.history.length + 1 });
         this.incrementMoveCounter();
         this.updateMoveCounter();
@@ -93,9 +101,9 @@ function Puzzle () {
     return currentState === winningFormula;
   }
 
-  this.restart = function () {
+  this.restart = async function () {
     // shuffle the puzzle
-    this.shuffle();
+    await this.shuffle();
 
     // set the puzzle's move counter back to 0
     this.resetMoveCounter();
@@ -131,7 +139,7 @@ function Puzzle () {
     $('#timer').html(this.timer.getTimeValues().toString());
   }
 
-  this.shuffle = function (params) {
+  this.shuffle = async function (params) {
     // default parameters
     params = params || {};
 
@@ -148,18 +156,14 @@ function Puzzle () {
     // loop as many times as the random number
     // perform an action
     for (var i = 0; i < randomInt; i++) {
-      // within this action:
-      // 1. locate the empty chunk
-      var emptyChunk = new EmptyChunk();
-
       // 2. determine all potential directions the chunk can move in its current chunk (up, down, left, right)
-      var directions = emptyChunk.moveableDirections();
+      var directions = this.emptyChunk.moveableDirections();
 
       // 3. randomise a direction to travel
       var randomDirection = directions[Math.floor(Math.random() * directions.length)];
 
       // 4. move empty chunk
-      emptyChunk.move(randomDirection);
+      await this.emptyChunk.move(randomDirection);
 
       // 5. store direction moved in history container
       this.history.push({ direction: randomDirection, player: false, moveNumber: this.history.length + 1 });
@@ -172,14 +176,15 @@ function Puzzle () {
     return this.history;
   }
 
-  this.solve = () => {
+  this.solve = async () => {
     const history = this.history;
 
-    history.reverse().forEach(move => {
+    for (move of history.reverse()) {
       const undoMove = oppositeMove(move.direction);
-      var emptyChunk = new EmptyChunk();
-      emptyChunk.move(undoMove);
-    });
+      await this.emptyChunk.move(undoMove);
+    };
+
+    this.history = [];
   }
 
   function oppositeMove (m) {

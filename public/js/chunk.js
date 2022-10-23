@@ -1,3 +1,6 @@
+const DEFAULT_CHUNK_POS = { top: 0, left: 0 };
+
+
 function Chunk (element) {
   this.element = element;
   this.image = element.firstElementChild;
@@ -14,14 +17,18 @@ function Chunk (element) {
     var imageChunk = $(this.image);
 
     imageChunk.css(style);
-    setTimeout(() => {
-      $('#chunk-' + emptyChunkID()).html(imageChunk[0]);
-      $('#chunk-' + this.cellID).html(emptyChunk);
-      imageChunk.css({top: 0, left: 0});
-    }, 500);
+    return new Promise (resolve => {
+      setTimeout(() => {
+        $('#chunk-' + emptyChunkID()).html(imageChunk[0]);
+        $('#chunk-' + this.cellID).html(emptyChunk);
+        imageChunk.css(DEFAULT_CHUNK_POS);
+
+        resolve();
+      }, 550);
+    });
   }.bind(this);
 
-  this.move = function () {
+  this.move = async function () {
     let direction, style;
   
     if (this.canMoveRight()) {
@@ -44,7 +51,7 @@ function Chunk (element) {
       style = { top: '194.1172px'};
     }
 
-    updateChunkPosition(style);
+    await updateChunkPosition(style);
     return direction;
   }
 

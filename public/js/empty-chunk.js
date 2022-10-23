@@ -12,10 +12,12 @@ function EmptyChunk () {
   }
 
   this.move = function (direction) {
-    var newId;
+    var newId, style;
+
     switch (direction) {
       case 'up':
         newId = this.whereami() - 3;
+        style = { top: '194.1172px' };
         break;
 
       case 'down':
@@ -23,25 +25,36 @@ function EmptyChunk () {
         // '1' + 1 == '11'
         // '1' - 1 == 0
         newId = this.whereami() + 3;
+        style = { top: '-194.1172px' };
         break;
 
       case 'left':
         newId = this.whereami() - 1;
+        style = { left: '194.1172px'};
         break;
 
       case 'right':
         newId = this.whereami() + 1;
+        style = { left: '-194.1172px' };
         break;
     }
 
     const imageChunkCell = $(('#chunk-' + newId));
-    const imageChunk = imageChunkCell.children()[0];
+    const imageChunk = imageChunkCell.children();
 
     const imageChunkSelector = '#chunk-' + newId;
     const emptyChunkSelector = '#chunk-' + this.whereami();
 
-    $(imageChunkSelector).html(this.element());
-    $(emptyChunkSelector).html(imageChunk);
+    imageChunk.css(style);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        $(imageChunkSelector).html(this.element());
+        $(emptyChunkSelector).html(imageChunk);
+        imageChunk.css({top: 0, left: 0});
+
+        resolve();
+      }, 550);
+    });
   }
 
   // determines the possible
